@@ -1,0 +1,122 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MaterialApp(home: TodoApp(), debugShowCheckedModeBanner: false));
+}
+
+class TodoApp extends StatefulWidget {
+  const TodoApp({super.key});
+
+  @override
+  State<TodoApp> createState() => _TodoAppState();
+}
+
+class _TodoAppState extends State<TodoApp> {
+  final List<_TodoItem> _todos = [];
+  final TextEditingController _controller = TextEditingController();
+
+  void _addTodo() {
+    final text = _controller.text.trim();
+    if (text.isEmpty) return;
+    setState(() {
+      _todos.add(_TodoItem(title: text));
+      _controller.clear();
+    });
+  }
+
+  void _toggleDone(int index) {
+    setState(() {
+      _todos[index].done = !_todos[index].done;
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Todoアプリ')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    decoration: const InputDecoration(hintText: 'Todoを入力'),
+                    onSubmitted: (_) => _addTodo(),
+                  ),
+                ),
+                IconButton(icon: const Icon(Icons.add), onPressed: _addTodo),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _todos.length,
+                itemBuilder: (context, index) {
+                  final todo = _todos[index];
+                  return ListTile(
+                    title: Text(
+                      todo.title,
+                      style: TextStyle(
+                        decoration:
+                            todo.done
+                                ? TextDecoration.lineThrough
+                                : TextDecoration.none,
+                      ),
+                    ),
+                    onTap: () => _toggleDone(index),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TodoItem {
+  final String title;
+  bool done;
+
+  _TodoItem({required this.title, this.done = false});
+}
+
+---
+  
+   このコードの最初の行にある  
+  # debugShowCheckedModeBanner:　false  
+  これは右上に出るDEBUGマークを消す設定です。  
+
+---  
+このDEBUGは実験中などの意味を持つものらしいです。  
+
+---
+次にこのコード  
+# class TodoApp extends StatefulWidget {const TodoApp({super.key});  
+ここでTodoAppというウィジェットを定義しています。  
+ここでは状態を持たせたいので、StatefulWidgetを使っています。
+constは変わらないことを示し、super.keyで親クラスにキーを渡しています。  
+  
+  ---
+
+  次のコードではTodoAppが使う「状態を管理するクラス」を作ることを指定しています。  
+  # @overrideState<TodoApp> createState() => _TodoAppState();  
+次のコードのTodoAppはTodoAppの「状態」を管理するクラスの中身です。_が頭につくクラス名や変数は、このファイルだけで使えることを意味します。  
+---
+次のコードはまだ完璧には理解できていませんが、Todoリストを保存するためのリストというものらしいです。  
+# final List<_TodoItem> _todos = [];  
+次のコードはテキスト入力欄の内容をプログラムで操作・取得するためのコントローラーです。  
+入力された文字を取得したり、消したりできます。　　
+# inal TextEditingController _controller = TextEditingController();  
+次は次回のgithubで作成します。
+

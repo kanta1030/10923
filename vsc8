@@ -1,0 +1,41 @@
+- 前回のtodoアプリの解析の続き  
+---
+### todoを追加するための関数  
+>## void _addTodo() {  
+- これはボタンを押したりEnterキーを押したときに呼び出されます。  
+---  
+### textに保存するためのもの  
+>## final text = _controller.text.trim();  
+- これは入力欄から文字を取り出し、前後の空白を取り除いたものをtextに保存します。  
+---
+### 入力されなかった場合のもの  
+>## if (text.isEmpty) return;  
+- これは入力が空なら何もせずに終了します。  
+---
+### 状態の更新をするもの  
+>## setState(() {   _todos.add(_TodoItem(title: text));  _controller.clear();    });  
+- このコードに出てくるsetStateを使うことで、画面を再描画します。  
+- また、この_todosに新しいTodoを追加することで、入力欄を空に戻します。  
+---
+### 完了状態を切り替えるもの  
+>## void _toggleDone(int index) {  
+- これはリストの項目をタップすると呼ばれます。  
+---
+### Todoのdoneを反転させるもの  
+>## setState(() {_todos[index].done = !_todos[index].done;});  
+- これは指定されたインデックスのTodoのdoneを反転させます。  
+例えば、'true→false'に'false→true'に  
+反転させます  
+※また、状態が変わったので、setStateで画面も更新します。  
+---
+### アプリを終了させるときに呼ばれる関数  
+>## @overridevoid dispose() {_controller.dispose();super.dispose();}  
+- これは、_controller.dispose()でメモリを解放して無駄をなくし、  
+super.dispose()で親クラスの処理もちゃんと呼びます。  
+---  
+### UIを構築する関数  
+>## @override  Widget build(BuildContext context) {  
+- これは、Flutterでは画面を「ウィジェット」で作っていくので、ここでその構成を定義します。  
+---  
+### 
+
